@@ -11,5 +11,16 @@ class MagicLinkService {
             return "";
         }
     }
+    isUserLogin = async () => {
+        try {
+            if (magic) {
+                const isLoggedIn = await magic.user.isLoggedIn();
+                return isLoggedIn;
+            }
+        } catch (error) {
+            console.log("Error trying to check if user is logged In: ", error);
+            return false;
+        }
+    }
 }
 export const magicLinkService = new MagicLinkService();

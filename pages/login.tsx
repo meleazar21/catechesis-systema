@@ -6,6 +6,13 @@ import { isValidEmail } from "@/utils/email.util";
 import { magicLinkService } from "@/services/magic-link.service";
 import { useRouter } from "next/router";
 import { Paths } from "@/constants/paths";
+import { NextApiRequest } from "next";
+import useRedirectUser from "@/hooks/redirect-user";
+import LoadingIcon from "@/components/icons/loading-icon";
+
+interface IContext {
+    req: NextApiRequest;
+}
 
 const Login = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -34,7 +41,21 @@ const Login = () => {
         if (!idToken) {
             setUserMsg("Error trying to login: " + idToken);
         } else {
-            router.push(Paths.Home);
+            const request = await fetch("/api/login", {
+                method: "POST",
+                headers: {
+                    'authorization': `Bearer ${idToken}`,
+                    'content-type': 'application/json'
+                }
+            });
+            const response = await request.json();
+            if (response.success)
+                router.push(Paths.Home);
+            else {
+                setUserMsg("Something went wrong while trying to login");
+                setLoading(false);
+            }
+
         }
     }
 
@@ -74,7 +95,15 @@ const Login = () => {
                         onKeyDown={(e: React.KeyboardEvent<HTMLInputElement>) => handleKeyDown(e)}
                     />
                     <p className={styles.userMsg}>{userMsg}</p>
-                    <button disabled={disableLoginBtn()} className={styles.loginBtn} onClick={handleLoginWithEmail}>{loading ? "Iniciando..." : "Iniciar"}</button>
+                    <button disabled={disableLoginBtn()} className={styles.loginBtn} onClick={handleLoginWithEmail}>
+                        {loading && (
+                            <>
+                                <LoadingIcon width={1} heigh={1} />
+                                Iniciando...
+                            </>
+                        )}
+                        {!loading && "Iniciar"}
+                    </button>
                 </div>
             </main>
         </div>

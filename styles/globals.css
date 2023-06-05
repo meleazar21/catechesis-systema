@@ -1,3 +1,7 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
 html,
 body {
   padding: 0;
@@ -91,7 +95,7 @@ button {
   }
 
   body {
-    color: white;
-    background: black;
+    color: var(--white20);
+    background: var(--white20);
   }
 }
