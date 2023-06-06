@@ -42,6 +42,6 @@ export async function createNewUser(metadata: MagicUserMetadata, token: string) 
     { email, issuer, publicAddress },
     token
   );
-  console.log({ response: response.errors })
+  console.log({ response: response.errors });
   return response;
 }

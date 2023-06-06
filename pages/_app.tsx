@@ -1,6 +1,7 @@
 import Loader from '@/components/commons/loader';
 import { Paths } from '@/constants/paths';
 import useRedirectUser from '@/hooks/redirect-user';
+import { magicLinkService } from '@/services/magic-link.service';
 import '@/styles/globals.css'
 import { NextApiRequest } from 'next';
 import type { AppProps } from 'next/app'
@@ -32,8 +33,7 @@ export default function App({ Component, pageProps }: AppProps) {
   useEffect(() => {
     const checkIsLoggedIn = async () => {
       setLoading(true);
-      const isLoggedIn = false;
-      console.log({ isLoggedIn });
+      const isLoggedIn = await magicLinkService.isUserLogin();
       if (isLoggedIn) router.push(Paths.Home);
       else router.push(Paths.Login);
     }

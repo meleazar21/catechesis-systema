@@ -9,7 +9,7 @@ body {
   font-family: "Roboto Slab", -apple-system, BlinkMacSystemFont, Segoe UI,
     Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
     sans-serif;
-  background-color: var(--white20);
+  background-color: var(--white30);
   color: var(--white20);
   overflow-x: hidden;
 }

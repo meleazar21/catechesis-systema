@@ -14,8 +14,7 @@ const Login = async (req: NextApiRequest, res: NextApiResponse) => {
         const token = await getToken(metadata);
 
         const isNew = await isNewUser(metadata.issuer ?? "", token);
-        console.log({ isNew });
-        await createNewUser(metadata, token);
+        isNew && await createNewUser(metadata, token);
         setTokenCookie(token, res);
         res.send({ success: true });
     } catch (error) {
