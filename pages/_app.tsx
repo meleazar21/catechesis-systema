@@ -2,11 +2,13 @@ import Loader from '@/components/commons/loader';
 import { Paths } from '@/constants/paths';
 import useRedirectUser from '@/hooks/redirect-user';
 import { magicLinkService } from '@/services/magic-link.service';
+import { storeReducer } from '@/state/reducers';
+import { StoreContext, initialState } from '@/store/store-context';
 import '@/styles/globals.css'
 import { NextApiRequest } from 'next';
 import type { AppProps } from 'next/app'
 import { useRouter } from 'next/router';
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 
 interface IContext {
   req: NextApiRequest;
@@ -27,6 +29,8 @@ const getServerSideProps = async (context: IContext) => {
 }
 
 export default function App({ Component, pageProps }: AppProps) {
+
+  const [state, dispatch] = useReducer(storeReducer, initialState)
   const [loading, setLoading] = useState<boolean>(true);
   const router = useRouter();
 
@@ -53,7 +57,11 @@ export default function App({ Component, pageProps }: AppProps) {
   return (
     <>
       {loading && <Loader />}
-      {!loading && <Component {...pageProps} />}
+      {!loading && (
+        <StoreContext.Provider value={{ state, dispatch }}>
+          <Component {...pageProps} />
+        </StoreContext.Provider>
+      )}
     </>
   )
 }

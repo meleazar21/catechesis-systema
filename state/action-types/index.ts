@@ -1,0 +1,5 @@
+export enum ActionTypes {
+    DISPLAY_DRAWER = "DISPLAY_DRAWER",
+    SET_LOADING = "SET_LOADING",
+    SET_USER_INFO = "SET_USER_INFO",
+}
