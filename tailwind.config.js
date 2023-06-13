@@ -16,7 +16,10 @@ module.exports = {
     colors: {
       primary: '#006FCF',
       dark: '#212529',
-      dark200: '#212529'
+      black200: '#212529',
+      white200: '#f3f4f6',
+      blue: '#000080',
+      indigo: '#362F78'
     },
     spacing: {
       px: '1px',

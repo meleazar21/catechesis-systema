@@ -1,3 +1,4 @@
+import { IUserInfo } from "@/interfaces/user-info";
 import { ActionTypes } from "../action-types";
 
 
@@ -11,7 +12,7 @@ interface ISetLoading {
 }
 interface ISetUserInfo {
     type: ActionTypes.SET_USER_INFO;
-    payload: string;
+    payload: IUserInfo;
 }
 
 

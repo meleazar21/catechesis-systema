@@ -1,4 +1,6 @@
 export interface IIcon {
-    width: number;
-    heigh: number;
+    color?: string;
+    width?: number;
+    heigh?: number;
+    className?: string;
 }

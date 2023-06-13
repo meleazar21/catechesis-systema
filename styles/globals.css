@@ -6,12 +6,12 @@ html,
 body {
   padding: 0;
   margin: 0;
-  font-family: "Roboto Slab", -apple-system, BlinkMacSystemFont, Segoe UI,
+  font-family: 'Montserrat', sans-serif, -apple-system, BlinkMacSystemFont, Segoe UI,
     Roboto, Oxygen, Ubuntu, Cantarell, Fira Sans, Droid Sans, Helvetica Neue,
     sans-serif;
   background-color: var(--white30);
-  color: var(--white20);
   overflow-x: hidden;
+  height: 100%;
 }
 
 * {
@@ -90,12 +90,7 @@ button {
 }
 
 @media (prefers-color-scheme: dark) {
-  html {
-    color-scheme: dark;
-  }
-
   body {
-    color: var(--white20);
     background: var(--white20);
   }
 }

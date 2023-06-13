@@ -1,7 +1,7 @@
 import { NextApiRequest, NextApiResponse } from "next";
 import { magicAdmin } from "@/lib/magic";
 import { getToken } from "@/utils/jwt.utils";
-import { createNewUser, isNewUser } from "@/lib/users";
+import { createNewUser, getUserByIssuer } from "@/lib/users";
 import { setTokenCookie } from "@/lib/cookies";
 
 const Login = async (req: NextApiRequest, res: NextApiResponse) => {
@@ -13,10 +13,15 @@ const Login = async (req: NextApiRequest, res: NextApiResponse) => {
         const metadata = await magicAdmin.users.getMetadataByToken(didToken);
         const token = await getToken(metadata);
 
-        const isNew = await isNewUser(metadata.issuer ?? "", token);
-        isNew && await createNewUser(metadata, token);
+        let response = await getUserByIssuer(metadata.issuer ?? "", token);
+        const isNewUser = response?.user?.length === undefined;
         setTokenCookie(token, res);
-        res.send({ success: true });
+        if (isNewUser) {
+            let insertedUser = await createNewUser(metadata, token);
+            res.send({ success: true, userInfo: insertedUser.data.insert_user.returning[0] });
+        } else {
+            res.send({ success: true, userInfo: response?.user[0] });
+        }
     } catch (error) {
         res.status(500).send({ success: false, message: error });
     }

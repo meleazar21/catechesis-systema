@@ -1,36 +1,48 @@
 import { MagicUserMetadata } from "@magic-sdk/admin";
 import { queryHasuraGraphQl } from "./hasura";
+import { UsertType } from "@/enums/user-type";
 
-export async function isNewUser(issuer: string, token: string) {
+export async function getUserByIssuer(issuer: string, token: string) {
   const operationsDoc = `
-        query isNewUser($issuer: String!) {
-          users(where: {issuer: {_eq: $issuer}}) {
-            email
+        query getUserByIssuer($issuer: String!) {
+          user(where: {issuer: {_eq: $issuer}}) {
             id
             issuer
+            publicAddress
+            isActive
+            userType
+            email
+            fullName
+            description
+            phone
           }
         }
       `;
 
   const response = await queryHasuraGraphQl(
     operationsDoc,
-    "isNewUser",
+    "getUserByIssuer",
     { issuer },
     token
   );
-  return response?.data?.users?.length === 0 ? true : false;
+  return response.data;
 }
 
 export async function createNewUser(metadata: MagicUserMetadata, token: string) {
   const { issuer, email, publicAddress } = metadata;
-
   const operationsDoc = `
       mutation createNewUser($email: String!, $issuer: String!, $publicAddress: String!) {
-        insert_user(objects: {email: $email ,issuer: $issuer, publicAddress: $publicAddress, type: "guest"}) {
+        insert_user(objects: {email: $email ,issuer: $issuer, publicAddress: $publicAddress, isActive:true ,userType: ${UsertType.Guest}}) {
           returning {
-            email
             id
             issuer
+            publicAddress
+            isActive
+            userType
+            email
+            fullName
+            description
+            phone
           }
         }
       }
@@ -42,6 +54,5 @@ export async function createNewUser(metadata: MagicUserMetadata, token: string) 
     { email, issuer, publicAddress },
     token
   );
-  console.log({ response: response.errors });
   return response;
 }

@@ -1,7 +1,7 @@
 import Head from "next/head";
 import Image from "next/image";
 import styles from "../styles/login.module.css";
-import { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useContext, useEffect, useState } from "react";
 import { isValidEmail } from "@/utils/email.util";
 import { magicLinkService } from "@/services/magic-link.service";
 import { useRouter } from "next/router";
@@ -9,6 +9,9 @@ import { Paths } from "@/constants/paths";
 import { NextApiRequest } from "next";
 import useRedirectUser from "@/hooks/redirect-user";
 import LoadingIcon from "@/components/icons/loading-icon";
+import { StoreContext } from "@/store/store-context";
+import { ActionTypes } from "@/state/action-types";
+import { IUserInfo } from "@/interfaces/user-info";
 
 interface IContext {
     req: NextApiRequest;
@@ -19,6 +22,7 @@ const Login = () => {
     const [email, setEmail] = useState<string>("");
     const [userMsg, setUserMsg] = useState<string>("");
     const router = useRouter();
+    const { dispatch } = useContext(StoreContext);
 
     const handleKeyDown = (e: React.KeyboardEvent<HTMLInputElement>) => {
         if (e.key === 'Enter') handleLoginWithEmail();
@@ -49,8 +53,15 @@ const Login = () => {
                 }
             });
             const response = await request.json();
-            if (response.success)
+            console.log({ response });
+            if (response.success) {
+                const newUserInfo = { ...response.userInfo } as IUserInfo;
+                dispatch({
+                    type: ActionTypes.SET_USER_INFO,
+                    payload: newUserInfo
+                });
                 router.push(Paths.Home);
+            }
             else {
                 setUserMsg("Something went wrong while trying to login");
                 setLoading(false);
