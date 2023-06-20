@@ -1,14 +1,16 @@
 import Head from 'next/head'
 import NavBar from '@/components/commons/navbar'
 import Drawer from '@/components/commons/drawer'
-import { useContext } from 'react'
+import { useContext, useEffect } from 'react'
 import { StoreContext } from '@/store/store-context'
 import HomeSection from '@/components/commons/home-section';
-import { GetServerSideProps, NextApiRequest } from "next";
+import { NextApiRequest } from "next";
 import useRedirectUser from "@/hooks/redirect-user";
 import { Paths } from "@/constants/paths";
 import { announcementService } from "@/services/announcement.service";
 import { IAnnouncements } from "@/interfaces/announcements";
+import { studentServices } from '@/services/students.service'
+import { LocalStorageConstants } from '@/constants/local-storage.constants'
 
 interface IContext {
   req: NextApiRequest;
@@ -37,6 +39,15 @@ interface IServerSideProps {
 export default function Home(props: IServerSideProps) {
   const { state } = useContext(StoreContext);
   const { isDrawerOpen } = state;
+
+
+  useEffect(() => {
+    const getBirthDates = async () => {
+      const response = await studentServices.getStudentsBirthDate(localStorage.getItem(LocalStorageConstants.MagicToken) ?? "");
+      console.log(response);
+    }
+    getBirthDates();
+  }, [])
   return (
     <div>
       <Head>

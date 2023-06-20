@@ -15,3 +15,6 @@ export const getAnnouncements = async (currentDate: string, token: string) => {
   const response = await queryHasuraGraphQl(operationsDoc, "getAnnouncements", { currentDate }, token);
   return response.data.Announcement;
 }
+export const getBirthdays = async (token: string) => {
+
+} 

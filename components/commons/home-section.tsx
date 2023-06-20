@@ -16,7 +16,6 @@ const HomeSection = (props: IHomeSection) => {
 
     const { state } = useContext(StoreContext);
 
-    console.log(state);
     return (
         <div className='flex flex-wrap w-full'>
 
@@ -55,6 +54,9 @@ const HomeSection = (props: IHomeSection) => {
             <CarouselAnnouncements
                 announcements={props.announcements}
             />
+            <Card type={CardType.Small} className="">
+
+            </Card>
         </div>
     );
 }

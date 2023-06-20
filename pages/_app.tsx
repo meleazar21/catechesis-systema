@@ -1,4 +1,5 @@
 import Loader from '@/components/commons/loader';
+import { LocalStorageConstants } from '@/constants/local-storage.constants';
 import { Paths } from '@/constants/paths';
 import useRedirectUser from '@/hooks/redirect-user';
 import { IUserInfo } from '@/interfaces/user-info';
@@ -38,16 +39,16 @@ export default function App({ Component, pageProps }: AppProps) {
 
   const loadUserData = async () => {
     let userInfo: IUserInfo;
-    const userData = localStorage.getItem("userInfo") ?? "";
+    const userData = localStorage.getItem(LocalStorageConstants.UserInfo) ?? "";
     if (Object.keys(userData).length) {
       userInfo = JSON.parse(userData) as IUserInfo;
     }
     else {
-      const magicToken = localStorage.getItem("magicToken");
+      const magicToken = localStorage.getItem(LocalStorageConstants.MagicToken);
       if (!magicToken) return;
       const response = await userService.login(magicToken);
       userInfo = { ...response.userInfo } as IUserInfo;
-      localStorage.setItem("userInfo", JSON.stringify(userInfo));
+      localStorage.setItem(LocalStorageConstants.UserInfo, JSON.stringify(userInfo));
 
     }
     dispatch({
