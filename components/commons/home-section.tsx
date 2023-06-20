@@ -14,12 +14,13 @@ interface IHomeSection {
 }
 const HomeSection = (props: IHomeSection) => {
 
-    const { state: { userInfo } } = useContext(StoreContext);
-    console.log({ userInfo })
+    const { state } = useContext(StoreContext);
+
+    console.log(state);
     return (
         <div className='flex flex-wrap w-full'>
 
-            {userInfo?.userType === UsertType.catechist && (
+            {state.userInfo?.userType === UsertType.catechist && (
                 <Card
                     className="h-full w-60 m-2 bg-white text-black rounded shadow"
                     type={CardType.Small}
@@ -35,14 +36,14 @@ const HomeSection = (props: IHomeSection) => {
                     </div>
                     <div className="p-2 w-full text-center">
                         <span className="mb-2 font-bold text-blue">
-                            {userInfo?.fullName}
+                            {state.userInfo?.fullName}
                         </span>
-                        <p className="mb-3 font-normal text-black">{userInfo?.description}</p>
+                        <p className="mb-3 font-normal text-black">{state.userInfo?.description}</p>
                     </div>
                     <ul className="p-2 text-center">
                         <li className="mb-1.5 flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-gray-100 group shadow">
                             <PhoneIcon className="h-5" color="red" />
-                            <span className="flex-1 ml-3 whitespace-nowrap">{userInfo?.phone}</span>
+                            <span className="flex-1 ml-3 whitespace-nowrap">{state.userInfo?.phone}</span>
                         </li>
                         <li className="mb-1.5 flex items-center p-3 text-base font-bold text-gray-900 rounded-lg bg-gray-100 group shadow">
                             <BookIcon className="h-5" color="green" />

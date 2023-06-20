@@ -4,6 +4,7 @@ import { useContext } from "react";
 import { StoreContext } from "@/store/store-context";
 import { ActionTypes } from "@/state/action-types";
 import BellIcon from "../icons/bell-icon";
+import { CHURCH } from "@/constants/env-variables.constants";
 
 const NavBar = () => {
 
@@ -33,7 +34,7 @@ const NavBar = () => {
                                     height={40}
                                 />
                                 <span className="self-center text-white200 text-white text-2xl font-semibold whitespace-nowrap">
-                                    Catequesis Calvario
+                                    {CHURCH.replaceAll("_", " ")}
                                 </span>
                             </div>
                         </div>

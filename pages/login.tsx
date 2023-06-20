@@ -1,5 +1,4 @@
 import Head from "next/head";
-import Image from "next/image";
 import styles from "../styles/login.module.css";
 import { FormEvent, useContext, useEffect, useState } from "react";
 import { isValidEmail } from "@/utils/email.util";
@@ -7,15 +6,11 @@ import { magicLinkService } from "@/services/magic-link.service";
 import { useRouter } from "next/router";
 import { Paths } from "@/constants/paths";
 import { NextApiRequest } from "next";
-import useRedirectUser from "@/hooks/redirect-user";
 import LoadingIcon from "@/components/icons/loading-icon";
 import { StoreContext } from "@/store/store-context";
 import { ActionTypes } from "@/state/action-types";
 import { IUserInfo } from "@/interfaces/user-info";
-
-interface IContext {
-    req: NextApiRequest;
-}
+import { userService } from "@/services/user.service";
 
 const Login = () => {
     const [loading, setLoading] = useState<boolean>(false);
@@ -45,15 +40,8 @@ const Login = () => {
         if (!idToken) {
             setUserMsg("Error trying to login: " + idToken);
         } else {
-            const request = await fetch("/api/login", {
-                method: "POST",
-                headers: {
-                    'authorization': `Bearer ${idToken}`,
-                    'content-type': 'application/json'
-                }
-            });
-            const response = await request.json();
-            console.log({ response });
+            localStorage.setItem("magicToken", idToken);
+            const response = await userService.login(idToken);
             if (response.success) {
                 const newUserInfo = { ...response.userInfo } as IUserInfo;
                 dispatch({
